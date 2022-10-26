@@ -1,21 +1,30 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { useInView } from "react-intersection-observer";
 import styled from 'styled-components';
 import axios from 'axios'
+import { useInView } from "react-intersection-observer";
 
-import Search from "./Search";
+import { ImSearch } from "react-icons/im"
 
 const Post = () => {
+    const navigate = useNavigate();
+    //데이터 저장
     const [list, setList] = useState([])
+    //페이지 저장
     const [page, setPage] = useState(0);
+    //검색 키 저장
+    const [key , setKey] =useState('')
     const [view, setInView] = useInView();
 
-    const navigate = useNavigate();
+    //input 포커스 설정
+    const InputRef = useRef(null);
+    const FocusInputRef = () => {
+        InputRef.current.focus();
+    }
 
     const GetDataList = async () => {
         try {
-            const res = await axios.get(process.env.REACT_APP_SERVER + `?page=${page}`)
+            const res = await axios.get(process.env.REACT_APP_SERVER + `?page=${page}&search=${key}`)
             setList([...list, ...res.data])
         } catch (err) {
             console.log(err)
@@ -24,7 +33,7 @@ const Post = () => {
 
     useEffect(() => {
         GetDataList()
-    }, [page])
+    }, [page, key])
 
     useEffect(() => {
         if (setInView && list?.length !== 0) {
@@ -34,14 +43,25 @@ const Post = () => {
 
     return (
         <>
-        <Search page={page} setPage={setPage} list={list} setList={setList} />
+            <InputArea>
+            <p onClick={()=> {FocusInputRef()}}><ImSearch/></p>
+            <input
+            ref={InputRef}
+            placeholder='검색어를 입력하세요'
+            onChange={(e)=> {
+                setKey(e.target.value)
+                setPage(0)
+                setList([])
+            }}  
+            />
+            </InputArea>
             <Containar>
                 {
                     list?.map((a) => {
                         return (
                             <Card 
-                            onClick={()=> {navigate(`${a.id}`)}}
-                            key={a.id}>
+                                onClick={()=> {navigate(`${a.id}`)}}
+                                key={a.id}>
                                 <div>
                                     <p>{a.id}.</p>
                                     <p>{a.title}</p>
@@ -57,6 +77,32 @@ const Post = () => {
     );
 };
 
+const InputArea = styled.div`
+    position: relative;
+    margin: 1rem 0;
+    p{
+        cursor: text;
+        position: absolute;
+        right: 10px;
+        top : -15%;
+        color: skyblue;
+    }
+
+    input {
+        width: 20rem;
+        height: 2rem;
+        border-radius: 4px;
+        border: 2px solid #eee
+    }
+
+    input:focus {
+        outline: 1px solid skyblue;
+    }
+    input:hover {
+        border: 2px solid skyblue;
+    }
+`
+
 const Containar = styled.div`
     width: 55rem;
     height: 100%;
@@ -69,6 +115,7 @@ const Containar = styled.div`
 const Card = styled.div`
     width: 100%;
     height: 6.7rem;
+    margin-top: 1rem;
 
     // 3줄 설정
     display: -webkit-box;
