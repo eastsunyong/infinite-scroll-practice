@@ -6,6 +6,7 @@ import { useInView } from "react-intersection-observer";
 
 //아이콘
 import { ImSearch } from "react-icons/im"
+import Choice from "./Choice";
 
 const Post = () => {
     const navigate = useNavigate();
@@ -63,6 +64,7 @@ const Post = () => {
             }}  
             />
             </InputArea>
+            <Choice/>
             <Containar>
                 {
                     list?.map((a) => {
@@ -112,7 +114,7 @@ const InputArea = styled.div`
 `
 
 const Containar = styled.div`
-    width: 55rem;
+    width: 53rem;
     height: 100%;
     border: 1px solid skyblue;
     border-radius: 12px;
@@ -123,7 +125,7 @@ const Containar = styled.div`
 const Card = styled.div`
     width: 100%;
     height: 6.7rem;
-    margin-top: 1rem;
+    
 
     // 3줄 설정
     display: -webkit-box;
