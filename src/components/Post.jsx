@@ -4,10 +4,12 @@ import styled from 'styled-components';
 import axios from 'axios'
 import { useInView } from "react-intersection-observer";
 
+//아이콘
 import { ImSearch } from "react-icons/im"
 
 const Post = () => {
     const navigate = useNavigate();
+
     //데이터 저장
     const [list, setList] = useState([])
     //페이지 저장
@@ -15,6 +17,8 @@ const Post = () => {
     //검색 키 저장
     const [key , setKey] =useState('')
     const [view, setInView] = useInView();
+    //get 요청 멈추기
+    const [stop, setStop] =useState();
 
     //input 포커스 설정
     const InputRef = useRef(null);
@@ -26,12 +30,16 @@ const Post = () => {
         try {
             const res = await axios.get(process.env.REACT_APP_SERVER + `?page=${page}&search=${key}`)
             setList([...list, ...res.data])
+            setStop(res.data.length)
         } catch (err) {
             console.log(err)
         }
     }
 
     useEffect(() => {
+        if(stop === 0) {
+            return;
+        }
         GetDataList()
     }, [page, key])
 
