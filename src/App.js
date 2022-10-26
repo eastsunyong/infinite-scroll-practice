@@ -1,11 +1,15 @@
 import React from 'react'
-
-import { Header } from './components';
+import Main from './pages/Main';
+import Detail from './pages/Detail';
+import { Routes, Route } from "react-router-dom";
 
 function App() {
   return (
     <>
-      <Header/>
+      <Routes>
+                <Route path="/" element={<Main />} />
+                <Route path="/:id" element={<Detail />} />
+      </Routes>
     </>
   );
 }

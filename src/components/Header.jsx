@@ -3,9 +3,10 @@ import React from 'react';
 const Header = () => {
     return (
         <div>
-            <h1>헤더</h1>
+            <h2>영단어 속담 사전</h2>
         </div>
     );
 };
+
 
 export default Header;
