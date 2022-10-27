@@ -19,9 +19,10 @@ const Post = () => {
     const [page, setPage] = useState(0);
     //검색 키 저장
     const [key, setKey] = useState('')
+    //옵저버 설정
     const [view, setInView] = useInView();
     //클릭 상태값 저장
-    const [click, setClick] = useState(true)
+    const [click, setClick] = useState(true);
 
     //get 요청 멈추기
     const [stop, setStop] = useState(1);
@@ -36,7 +37,6 @@ const Post = () => {
     const GetDataList = async () => {
         try {
             const res = await axios.get(process.env.REACT_APP_SERVER + `?page=${page}&search=${key}`)
-            console.log('a포스트임', res)
             setListOne([...listOne, ...res.data])
             setStop(res.data.length)
         } catch (err) {
@@ -47,7 +47,6 @@ const Post = () => {
     const GetDataLists = async () => {
         try {
             const res = await axios.get(process.env.REACT_APP_SERVER2 + `?page=${page}&search=${key}`)
-            console.log('b포스트임', res)
             setListTwo([...listTwo, ...res.data])
             setStop(res.data.length)
         } catch (err) {

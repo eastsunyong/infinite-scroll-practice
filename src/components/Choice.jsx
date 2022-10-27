@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components';
 
-const Choice = ({click, setClick, setPage, setListOne, setListTwo}) => {
+const Choice = ({ click, setClick, setPage, setListOne, setListTwo}) => {
 
     return (
         <ButtonArea>
@@ -44,6 +44,7 @@ const ButtonArea = styled.div`
     }
     .cliked {
         color: skyblue;
+        pointer-events: none;
     }
 `
 
