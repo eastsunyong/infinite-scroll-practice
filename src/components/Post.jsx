@@ -11,18 +11,20 @@ import Choice from "./Choice";
 const Post = () => {
     const navigate = useNavigate();
 
-    //데이터 저장
-    const [list, setList] = useState([])
+    //a-post 데이터 저장
+    const [listOne, setListOne] = useState([])
+    //b-post 데이터 저장
+    const [listTwo, setListTwo] = useState([])
     //페이지 저장
     const [page, setPage] = useState(0);
     //검색 키 저장
-    const [key , setKey] =useState('')
+    const [key, setKey] = useState('')
     const [view, setInView] = useInView();
     //클릭 상태값 저장
-    const [click, setClick]= useState(true)
+    const [click, setClick] = useState(true)
 
     //get 요청 멈추기
-    const [stop, setStop] =useState(1);
+    const [stop, setStop] = useState(1);
 
     //input 포커스 설정
     const InputRef = useRef(null);
@@ -30,20 +32,39 @@ const Post = () => {
         InputRef.current.focus();
     }
 
-    //무한스크롤 get 요청
+    //무한스크롤 A-post get 요청
     const GetDataList = async () => {
         try {
             const res = await axios.get(process.env.REACT_APP_SERVER + `?page=${page}&search=${key}`)
-            setList([...list, ...res.data])
+            console.log('a포스트임', res)
+            setListOne([...listOne, ...res.data])
+            setStop(res.data.length)
+        } catch (err) {
+            console.log(err)
+        }
+    }
+    //무한스크롤 B-post get 요청
+    const GetDataLists = async () => {
+        try {
+            const res = await axios.get(process.env.REACT_APP_SERVER2 + `?page=${page}&search=${key}`)
+            console.log('b포스트임', res)
+            setListTwo([...listTwo, ...res.data])
             setStop(res.data.length)
         } catch (err) {
             console.log(err)
         }
     }
 
-    useEffect(()=> {
+    useEffect(() => {
+        if (click) {
             GetDataList()
-    },[page, key])
+            return;
+        }
+        if (!click) {
+            GetDataLists()
+            return;
+        }
+    }, [page, key, click])
 
 
     useEffect(() => {
@@ -51,42 +72,63 @@ const Post = () => {
             return;
         }
         if (setInView) {
-          setPage(page + 1);
+            setPage(page + 1);
         }
-      }, [setInView]);
+    }, [setInView]);
 
     return (
         <>
             <InputArea>
-            <p onClick={()=> {FocusInputRef()}}><ImSearch/></p>
-            <input
-            ref={InputRef}
-            placeholder='검색어를 입력하세요'
-            onChange={(e)=> {
-                setKey(e.target.value)
-                setPage(0)
-                setList([])
-            }}  
-            />
+                <p onClick={() => { FocusInputRef() }}><ImSearch /></p>
+                <input
+                    ref={InputRef}
+                    placeholder='검색어를 입력하세요'
+                    onChange={(e) => {
+                        setKey(e.target.value)
+                        setPage(0)
+                        setListOne([])
+                        setListTwo([])
+                    }}
+                />
             </InputArea>
-            <Choice click={click} setClick={setClick}/>
+            <Choice click={click} setClick={setClick} setPage={setPage} setListOne={setListOne} setListTwo={setListTwo} />
             <Containar>
                 {
-                    list?.map((a) => {
-                        return (
-                            <Card 
-                                onClick={()=> {navigate(`${a.id}`)}}
-                                key={a.id}>
-                                <div>
-                                    <p>{a.id}.</p>
-                                    <p>{a.title}</p>
-                                </div>
-                                    {a.content}
-                                <div ref={view}></div>
-                            </Card>
-                        )
-                    })
+                    click ? <>
+                        {
+                            listOne?.map((a) => {
+                                return (
+                                    <Card
+                                        onClick={() => { navigate(`${a.id}`) }}
+                                        key={a.id}>
+                                        <div>
+                                            <p>{a.id}.</p>
+                                            <p>{a.title}</p>
+                                        </div>
+                                        {a.content}
+                                        <div ref={view}></div>
+                                    </Card>
+                                )
+                            })
+                        } </> : <>
+                        {
+                            listTwo?.map((a) => {
+                                return (
+                                    <Card
+                                        onClick={() => { navigate(`${a.id}`) }}
+                                        key={a.id}>
+                                        <div>
+                                            <p>{a.id}.</p>
+                                            <p>{a.title}</p>
+                                        </div>
+                                        {a.content}
+                                        <div ref={view}></div>
+                                    </Card>
+                                )
+                            })
+                        }</>
                 }
+
             </Containar>
         </>
     );

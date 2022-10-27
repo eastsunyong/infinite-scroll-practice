@@ -1,18 +1,25 @@
-import { useState} from "react";
+import React from 'react'
 import styled from 'styled-components';
 
-const Choice = () => {
-const [test, setTest]= useState(true)
+const Choice = ({click, setClick, setPage, setListOne, setListTwo}) => {
 
     return (
         <ButtonArea>
             <button
-            className={test ? "cliked" : ""}
-            onClick={()=> {setTest(true)}}>A posts</button>
+            className={click ? "cliked" : ""}
+            onClick={()=> {
+                setClick(true)
+                setPage(0)
+                setListOne([])
+                }}>A posts</button>
 
             <button
-            className={test ? "" : "cliked"}
-            onClick={()=> {setTest(false)}}>B posts</button>
+            className={click ? "" : "cliked"}
+            onClick={()=> {
+                setClick(false)
+                setPage(0)
+                setListTwo([])
+                }}>B posts</button>
         </ButtonArea>
     );
 };
