@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from 'styled-components';
-import axios from 'axios'
+import axios from 'axios';
 import { useInView } from "react-intersection-observer";
 
 //아이콘
@@ -30,6 +30,7 @@ const Post = () => {
         InputRef.current.focus();
     }
 
+    //무한스크롤 get 요청
     const GetDataList = async () => {
         try {
             const res = await axios.get(process.env.REACT_APP_SERVER + `?page=${page}&search=${key}`)
@@ -40,14 +41,16 @@ const Post = () => {
         }
     }
 
-    useEffect(() => {
-        if(stop > 0 || key !== '') {
+    useEffect(()=> {
             GetDataList()
-        }
-    }, [page, key])
+    },[page, key])
+
 
     useEffect(() => {
-        if (setInView && list?.length !== 0) {
+        if (stop === 0) {
+            return;
+        }
+        if (setInView) {
           setPage(page + 1);
         }
       }, [setInView]);
