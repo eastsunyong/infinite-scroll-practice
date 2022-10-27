@@ -6,11 +6,15 @@ import axios from "axios";
 const Detail = () => {
     const navigate = useNavigate();
     const [detailList, setDetailList] =useState([])
-    const {id} = useParams();
+    const params = [useParams()]
+    //타입 확인
+    const type = params[0].id.slice(0,1)
+    //아이디 확인
+    const id = params[0].id.slice(5,9)
 
     const GetDataList = async () => {
         try {
-            const res = await axios.get(process.env.REACT_APP_SERVER + `/${id}`)
+            const res = await axios.get(process.env.REACT_APP_DETAIL + `/${type}-posts/${id}`)
             setDetailList(res.data)
         } catch (err) {
             console.log(err)

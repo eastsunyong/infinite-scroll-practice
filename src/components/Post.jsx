@@ -99,7 +99,7 @@ const Post = () => {
                             listOne?.map((a) => {
                                 return (
                                     <Card
-                                        onClick={() => { navigate(`${a.id}`) }}
+                                        onClick={() => { navigate(`aPost${a.id}`) }}
                                         key={a.id}>
                                         <div>
                                             <p>{a.id}.</p>
@@ -115,7 +115,7 @@ const Post = () => {
                             listTwo?.map((a) => {
                                 return (
                                     <Card
-                                        onClick={() => { navigate(`${a.id}`) }}
+                                        onClick={() => { navigate(`/bPost${a.id}`) }}
                                         key={a.id}>
                                         <div>
                                             <p>{a.id}.</p>
