@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from 'styled-components';
 import axios from 'axios'
@@ -18,8 +18,11 @@ const Post = () => {
     //검색 키 저장
     const [key , setKey] =useState('')
     const [view, setInView] = useInView();
+    //클릭 상태값 저장
+    const [click, setClick]= useState(true)
+
     //get 요청 멈추기
-    const [stop, setStop] =useState();
+    const [stop, setStop] =useState(1);
 
     //input 포커스 설정
     const InputRef = useRef(null);
@@ -38,10 +41,9 @@ const Post = () => {
     }
 
     useEffect(() => {
-        if(stop === 0) {
-            return;
+        if(stop > 0 || key !== '') {
+            GetDataList()
         }
-        GetDataList()
     }, [page, key])
 
     useEffect(() => {
@@ -64,7 +66,7 @@ const Post = () => {
             }}  
             />
             </InputArea>
-            <Choice/>
+            <Choice click={click} setClick={setClick}/>
             <Containar>
                 {
                     list?.map((a) => {
