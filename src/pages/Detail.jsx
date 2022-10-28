@@ -43,27 +43,25 @@ const Layout = styled.div`
     flex-direction: column;
 
     button {
-        width: 150px;
-        height: 50px;
+        width: 8.5rem;
+        height: 3rem;
         background-color: skyblue;
         border: none;
-        border-radius: 12px;
+        border-radius: 1rem;
         color: white;
+        font-size: 1rem;
+        font-weight: 700;
         cursor: pointer;
         :hover {
             background-color:rgba(59,130,246,0.5);
         }
-    }
-
-    div:last-child {
-        display: flex;
     }
 `
 
 const Box = styled.div`
     width: 50%;
     border: 1px solid skyblue;
-    border-radius: 8px;
+    border-radius: 1rem;
     margin-top: 5rem;
     margin-bottom: 2rem;
     padding: 2rem 4rem;
@@ -73,6 +71,7 @@ const Box = styled.div`
         text-align: center;
     }
     h2 {
+        font-size: 2rem;
         margin-top: 0px;
     }
 `

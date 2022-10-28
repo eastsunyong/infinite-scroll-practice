@@ -34,7 +34,7 @@ const Post = () => {
     }
 
     //무한스크롤 A-post get 요청
-    const GetDataList = async () => {
+    const GetDataAPost = async () => {
         try {
             const res = await axios.get(process.env.REACT_APP_SERVER + `?page=${page}&search=${key}`)
             setListOne([...listOne, ...res.data])
@@ -44,7 +44,7 @@ const Post = () => {
         }
     }
     //무한스크롤 B-post get 요청
-    const GetDataLists = async () => {
+    const GetDataBPost = async () => {
         try {
             const res = await axios.get(process.env.REACT_APP_SERVER2 + `?page=${page}&search=${key}`)
             setListTwo([...listTwo, ...res.data])
@@ -54,18 +54,19 @@ const Post = () => {
         }
     }
 
+    //선택한 버튼에 따라서 get 요청 보내기
     useEffect(() => {
         if (click) {
-            GetDataList()
+            GetDataAPost()
             return;
         }
         if (!click) {
-            GetDataLists()
+            GetDataBPost()
             return;
         }
-    }, [page, key, click])
+    }, [page, click, key])
 
-
+    //스크롤 하단시 page+1 시키기
     useEffect(() => {
         if (stop === 0) {
             return;
@@ -104,7 +105,7 @@ const Post = () => {
                                             <p>{a.id}.</p>
                                             <p>{a.title}</p>
                                         </div>
-                                        {a.content}
+                                            <label>{a.content}</label>
                                         <div ref={view}></div>
                                     </Card>
                                 )
@@ -120,7 +121,7 @@ const Post = () => {
                                             <p>{a.id}.</p>
                                             <p>{a.title}</p>
                                         </div>
-                                        {a.content}
+                                            <label>{a.content}</label>
                                         <div ref={view}></div>
                                     </Card>
                                 )
@@ -139,7 +140,7 @@ const InputArea = styled.div`
     p{
         cursor: text;
         position: absolute;
-        right: 10px;
+        right: 1rem;
         top : -15%;
         color: skyblue;
     }
@@ -147,15 +148,14 @@ const InputArea = styled.div`
     input {
         width: 20rem;
         height: 2rem;
-        border-radius: 4px;
-        border: 2px solid #eee
-    }
-
-    input:focus {
-        outline: 1px solid skyblue;
-    }
-    input:hover {
+        border-radius: 0.5rem;
+        border: 2px solid #eee;
+        :focus{
+        outline: 1px solid  skyblue;
+        }
+        :hover {
         border: 2px solid skyblue;
+        }
     }
 `
 
@@ -163,15 +163,16 @@ const Containar = styled.div`
     width: 53rem;
     height: 100%;
     border: 1px solid skyblue;
-    border-radius: 12px;
+    border-radius: 1rem;
     box-shadow: 0px 2px 8px rgba(17, 24, 39, 0.25);
-    padding: 20px;
+    padding: 1rem;
 `
 
 const Card = styled.div`
     width: 100%;
     height: 6.7rem;
-    
+    cursor: pointer;
+    margin-bottom: 0.5rem;
 
     // 3줄 설정
     display: -webkit-box;
@@ -185,16 +186,26 @@ const Card = styled.div`
        background-color: rgba(0,0,0,0.1)
     }
     
-
     div {
         display: flex;
-        height: 40px;
-        gap: 5px;
+        height: 2.5rem;
+        gap: 0.5rem;
         font-weight: 500;
+        font-size: 1rem;
+
+        p {
+            margin-top: 8px;
+            font-size: 20px;
+        }
+        
         P:first-child {
             color: skyblue;
         }
     }
+        label {
+            font-size: 16px;
+            font-weight: 350;
+        }
 
 `
 
